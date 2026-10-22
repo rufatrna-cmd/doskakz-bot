@@ -1,21 +1,21 @@
 const TelegramBot = require('node-telegram-bot-api');
 const http = require('http');
 
-// Tokeni Render mühitindən və ya birbaşa oxuyuruq
+// Tokeni Render mühitindən oxuyuruq
 const token = process.env.BOT_TOKEN || '8746353448:AAEaCRxb_DFtvdzC9OUAKEyQ0_3TwUKSieU';
 const bot = new TelegramBot(token, { polling: true });
 
 console.log('🤖 doskakz.my botu buludda işə düşdü və düymələri gözləyir...');
 
-// Render Web Service üçün sadə HTTP server (port tələbini ödəmək üçün)
+// Render-in tələb etdiyi PORT dinləyicisi (Render üçün tam uyğunlaşdırılmış)
+const PORT = process.env.PORT || 10000;
 const server = http.createServer((req, res) => {
   res.writeHead(200, { 'Content-Type': 'text/plain' });
-  res.end('Doskakz Bot is running successfully!\n');
+  res.end('Doskakz Bot is Live!\n');
 });
 
-const PORT = process.env.PORT || 3000;
-server.listen(PORT, () => {
-  console.log(`HTTP server is listening on port ${PORT}`);
+server.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server is listening on port ${PORT}`);
 });
 
 // Telegram düymə klikləri (Callback Query)
