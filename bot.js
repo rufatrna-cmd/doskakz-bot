@@ -2,7 +2,7 @@ const TelegramBot = require('node-telegram-bot-api');
 const { createClient } = require('@supabase/supabase-js');
 const http = require('http');
 
-// Чтение данных Supabase из переменных окружения
+// Supabase mühit dəyişənləri
 const SUPABASE_URL = process.env.SUPABASE_URL;
 const SUPABASE_KEY = process.env.SUPABASE_KEY;
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
@@ -10,9 +10,9 @@ const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 const token = process.env.BOT_TOKEN || '8746353448:AAEaCRxb_DFtvdzC9OUAKEyQ0_3TwUKSieU';
 const bot = new TelegramBot(token, { polling: true });
 
-console.log('🤖 doskakz.my бот запущен с интеграцией Supabase...');
+console.log('🤖 doskakz.my botu Supabase ilə işə düşdü...');
 
-// HTTP сервер для Render
+// Render HTTP Server
 const PORT = process.env.PORT || 10000;
 const server = http.createServer((req, res) => {
   res.writeHead(200, { 'Content-Type': 'text/plain' });
@@ -20,10 +20,10 @@ const server = http.createServer((req, res) => {
 });
 
 server.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server is listening on port ${PORT}`);
+  console.log(`Server ${PORT} portunda dinləyir`);
 });
 
-// Обработка нажатий на кнопки в Telegram
+// Telegram düymə klikləri
 bot.on('callback_query', async (query) => {
     const chatId = query.message.chat.id;
     const messageId = query.message.message_id;
@@ -33,7 +33,7 @@ bot.on('callback_query', async (query) => {
         const adId = data.replace('approve_', '');
         
         try {
-            // Обновляем статус объявления в Supabase
+            // Supabase-də elanın statusunu yeniləyirik
             const { error } = await supabase
                 .from('ads')
                 .update({ isVip: true, status: 'approved' })
@@ -41,7 +41,7 @@ bot.on('callback_query', async (query) => {
 
             if (error) throw error;
 
-            console.log(`✅ Объявление #${adId} успешно обновлено в Supabase!`);
+            console.log(`✅ Elan #${adId} Supabase-də VIP edildi!`);
 
             await bot.editMessageCaption(
                 `✅ **TƏSDİQLƏNDİ VƏ VIP EDİLDİ!**\n\n📌 Elan ID: #${adId}`,
@@ -55,7 +55,7 @@ bot.on('callback_query', async (query) => {
             bot.answerCallbackQuery(query.id, { text: 'Elan Supabase-də VIP edildi!' });
 
         } catch (error) {
-            console.error('Ошибка обновления в Supabase:', error.message);
+            console.error('Supabase yenilənmə xətası:', error.message);
             bot.answerCallbackQuery(query.id, { text: 'Xəta: Bazada yenilənmədi.' });
         }
 
@@ -82,7 +82,7 @@ bot.on('callback_query', async (query) => {
             bot.answerCallbackQuery(query.id, { text: 'Ödəniş rədd edildi.' });
 
         } catch (error) {
-            console.error('Ошибка обновления в Supabase:', error.message);
+            console.error('Supabase yenilənmə xətası:', error.message);
             bot.answerCallbackQuery(query.id, { text: 'Xəta baş verdi.' });
         }
     }
