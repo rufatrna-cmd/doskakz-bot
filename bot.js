@@ -2,9 +2,9 @@ const TelegramBot = require('node-telegram-bot-api');
 const { createClient } = require('@supabase/supabase-js');
 const http = require('http');
 
-// Supabase mühit dəyişənləri
-const SUPABASE_URL = process.env.SUPABASE_URL;
-const SUPABASE_KEY = process.env.SUPABASE_KEY;
+// Supabase məlumatları birbaşa daxil edildi (Render xətası olmasın deyə)
+const SUPABASE_URL = 'https://yacngphemfadgwviejtm.supabase.co';
+const SUPABASE_KEY = 'sb_publishable_Usd-GcIGPovg2Tr8Lu5k-w_r5iTd_cB';
 const supabase = createClient(SUPABASE_URL, SUPABASE_KEY);
 
 const token = process.env.BOT_TOKEN || '8746353448:AAEaCRxb_DFtvdzC9OUAKEyQ0_3TwUKSieU';
@@ -57,7 +57,6 @@ bot.on('callback_query', async (query) => {
 
         } catch (error) {
             console.error('Supabase yenilənmə xətası:', error.message);
-            // Xətanı birbaşa Telegram bildirişində göstəririk
             bot.answerCallbackQuery(query.id, { text: `Xəta: ${error.message}` });
         }
 
