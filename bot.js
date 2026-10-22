@@ -34,10 +34,11 @@ bot.on('callback_query', async (query) => {
         
         try {
             // Supabase-də elanın statusunu yeniləyirik
-            const { error } = await supabase
+            const { data: updatedData, error } = await supabase
                 .from('ads')
                 .update({ isVip: true, status: 'approved' })
-                .eq('id', adId);
+                .eq('id', adId)
+                .select();
 
             if (error) throw error;
 
@@ -56,7 +57,8 @@ bot.on('callback_query', async (query) => {
 
         } catch (error) {
             console.error('Supabase yenilənmə xətası:', error.message);
-            bot.answerCallbackQuery(query.id, { text: 'Xəta: Bazada yenilənmədi.' });
+            // Xətanı birbaşa Telegram bildirişində göstəririk
+            bot.answerCallbackQuery(query.id, { text: `Xəta: ${error.message}` });
         }
 
     } else if (data.startsWith('reject_')) {
@@ -83,7 +85,7 @@ bot.on('callback_query', async (query) => {
 
         } catch (error) {
             console.error('Supabase yenilənmə xətası:', error.message);
-            bot.answerCallbackQuery(query.id, { text: 'Xəta baş verdi.' });
+            bot.answerCallbackQuery(query.id, { text: `Xəta: ${error.message}` });
         }
     }
 });
